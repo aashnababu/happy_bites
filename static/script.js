@@ -279,10 +279,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const nameInput = document.getElementById('cart-name');
             const phoneInput = document.getElementById('cart-phone');
+            const addressInput = document.getElementById('cart-address');
 
             if (!nameInput.value.trim() || !phoneInput.value.trim()) {
                 alert('Please enter your Name and Phone Number to complete the order.');
                 nameInput.focus();
+                return;
+            }
+
+            if (!addressInput.value.trim()) {
+                alert('Please enter your Delivery Address to complete the order.');
+                addressInput.focus();
                 return;
             }
 
@@ -297,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     total: cartTotalElement.innerText,
                     customer: {
                         name: nameInput.value.trim(),
-                        phone: phoneInput.value.trim()
+                        phone: phoneInput.value.trim(),
+                        address: addressInput.value.trim()
                     }
                 }),
             })
@@ -334,6 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Clear inputs
                     nameInput.value = '';
                     phoneInput.value = '';
+                    addressInput.value = '';
                 })
                 .catch(error => {
                     console.error('Error:', error);

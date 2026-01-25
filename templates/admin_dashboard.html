@@ -121,6 +121,7 @@
                                 <tr>
                                     <th>#ID</th>
                                     <th>Date</th>
+                                    <th>Customer</th>
                                     <th>Items</th>
                                     <th>Total</th>
                                     <th>Status</th>
@@ -132,6 +133,11 @@
                                 <tr>
                                     <td>#{{ order['id'] }}</td>
                                     <td>{{ order['timestamp'] }}</td>
+                                    <td>
+                                        <strong>{{ order['customer']['name'] }}</strong><br>
+                                        <small>📞 {{ order['customer']['phone'] }}</small><br>
+                                        <small>📍 {{ order['customer'].get('address', 'N/A') }}</small>
+                                    </td>
                                     <td>
                                         <ul class="order-items-list">
                                             {% for item in order['items'] %}
@@ -163,7 +169,7 @@
                                 </tr>
                                 {% else %}
                                 <tr>
-                                    <td colspan="6" class="text-center">No orders found.</td>
+                                    <td colspan="7" class="text-center">No orders found.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

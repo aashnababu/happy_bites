@@ -210,6 +210,8 @@
                     value="{{ session.full_name if session.user_logged_in else '' }}">
                 <input type="tel" id="cart-phone" placeholder="Phone Number" class="cart-input"
                     value="{{ session.phone if session.user_logged_in else '' }}">
+                <input type="text" id="cart-address" placeholder="Delivery Address" class="cart-input"
+                    value="{{ session.address if session.user_logged_in else '' }}">
             </div>
             <div class="cart-total">
                 <span>Total:</span>

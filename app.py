@@ -27,6 +27,7 @@ class Order(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     customer_name = db.Column(db.String(100), nullable=False)
     customer_phone = db.Column(db.String(20), nullable=False)
+    customer_address = db.Column(db.Text, nullable=True)
     total = db.Column(db.String(20), nullable=False)
     status = db.Column(db.String(20), default='Pending')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
@@ -198,7 +199,12 @@ def admin_dashboard():
             'timestamp': o.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
             'items': [{'name': i.name, 'price': i.price, 'qty': getattr(i, 'quantity', 1)} for i in o.items],
             'total': o.total,
-            'status': o.status
+            'status': o.status,
+            'customer': {
+                'name': o.customer_name,
+                'phone': o.customer_phone,
+                'address': getattr(o, 'customer_address', 'N/A')
+            }
         })
 
     return render_template('admin_dashboard.html', 
@@ -287,6 +293,7 @@ def order():
     new_order = Order(
         customer_name=customer.get('name', 'Guest'),
         customer_phone=customer.get('phone', 'N/A'),
+        customer_address=customer.get('address', 'N/A'), # Added address field
         total=total or "Rs.0.00",
         user_id=user_id
     )
