@@ -45,16 +45,21 @@
                     <h2>Change Admin Credentials</h2>
 
                     {% if error %}
-                    <div class="error-msg">{{ error }}</div>
+                    <div class="error-msg"
+                        style="background: #fff5f5; color: #e53e3e; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #e53e3e;">
+                        {{ error }}
+                    </div>
                     {% endif %}
 
                     {% if success %}
-                    <div class="success-msg">
+                    <div class="success-msg"
+                        style="background: #f0fff4; color: #38a169; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #38a169;">
                         {{ success }}
                     </div>
                     {% endif %}
 
                     <form method="POST">
+                        <input type="hidden" name="action" value="update_credentials">
                         <div class="form-group">
                             <label>Current Credentials</label>
                             <input type="text" name="current_username" placeholder="Current Username" required
@@ -73,6 +78,61 @@
 
                         <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Update
                             Credentials</button>
+                    </form>
+                </div>
+
+                <div class="orders-section" style="max-width: 600px; margin: 2rem auto; animation: fadeIn 0.7s ease;">
+                    <h2>Store Information (About Us / Footer)</h2>
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update_store_info">
+                        <div class="form-group">
+                            <label>Store Address</label>
+                            <textarea name="address" rows="3" required
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;">{{ store_settings.address }}</textarea>
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Phone Number</label>
+                            <input type="text" name="phone" value="{{ store_settings.phone }}" required
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Email Address</label>
+                            <input type="email" name="email" value="{{ store_settings.email }}" required
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+
+                        <h3 style="margin-top: 2rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Social
+                            Media Links</h3>
+                        <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">Leave blank to hide the icon on
+                            the website.</p>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Instagram URL</label>
+                            <input type="url" name="instagram" value="{{ store_settings.instagram or '' }}"
+                                placeholder="https://instagram.com/yourpage"
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Facebook URL</label>
+                            <input type="url" name="facebook" value="{{ store_settings.facebook or '' }}"
+                                placeholder="https://facebook.com/yourpage"
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Twitter (X) URL</label>
+                            <input type="url" name="twitter" value="{{ store_settings.twitter or '' }}"
+                                placeholder="https://twitter.com/yourpage"
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>WhatsApp Number</label>
+                            <input type="text" name="whatsapp" value="{{ store_settings.whatsapp or '' }}"
+                                placeholder="+1234567890"
+                                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+
+                        <button type="submit" class="btn-primary"
+                            style="width: 100%; margin-top: 1.5rem; background: #2d3436;">Update Store Info</button>
                     </form>
                 </div>
             </div>

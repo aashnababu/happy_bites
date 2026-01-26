@@ -277,16 +277,23 @@ document.addEventListener('DOMContentLoaded', () => {
         checkoutBtn.addEventListener('click', () => {
             if (cart.length === 0) return;
 
-            const nameInput = document.getElementById('cart-name');
-            const phoneInput = document.getElementById('cart-phone');
+            const addressInput = document.getElementById('cart-address');
 
-            if (!nameInput.value.trim() || !phoneInput.value.trim()) {
-                alert('Please enter your Name and Phone Number to complete the order.');
-                nameInput.focus();
+            if (!addressInput) {
+                // User is not logged in (prompted in UI, but safety check)
+                alert('Please login to place an order.');
+                window.location.href = '/login';
+                return;
+            }
+
+            if (!addressInput.value.trim()) {
+                alert('Please enter your Delivery Address to complete the order.');
+                addressInput.focus();
                 return;
             }
 
             // Send order to backend
+            // Note: Backend will get name/phone from session
             fetch('/api/order', {
                 method: 'POST',
                 headers: {
@@ -296,14 +303,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     items: cart,
                     total: cartTotalElement.innerText,
                     customer: {
-                        name: nameInput.value.trim(),
-                        phone: phoneInput.value.trim()
+                        address: addressInput.value.trim()
                     }
                 }),
             })
                 .then(response => response.json())
                 .then(data => {
-                    // Show Success Modal instead of alert
+                    // Show Success Modal
                     const successModal = document.getElementById('order-success-modal');
                     if (successModal) {
                         successModal.classList.add('show');
@@ -322,18 +328,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 successModal.classList.remove('show');
                             }
                         });
-                    } else {
-                        // Fallback
-                        alert('Order placed successfully! Thank you for choosing Happy Bites.');
                     }
 
                     cart = [];
                     saveCart();
                     updateCartUI();
                     toggleCart();
-                    // Clear inputs
-                    nameInput.value = '';
-                    phoneInput.value = '';
+                    // Clear address input if desired, but maybe keep for next order
+                    // addressInput.value = '';
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -367,7 +369,23 @@ document.addEventListener('DOMContentLoaded', () => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    alert('Thank you for your feedback!');
+                    // Show Thank You Modal
+                    const feedbackModal = document.getElementById('feedback-success-modal');
+                    if (feedbackModal) {
+                        feedbackModal.classList.add('show');
+
+                        // Close handlers
+                        const closeBtn = document.getElementById('close-feedback-modal');
+                        if (closeBtn) {
+                            closeBtn.onclick = () => feedbackModal.classList.remove('show');
+                        }
+
+                        feedbackModal.onclick = (e) => {
+                            if (e.target === feedbackModal) feedbackModal.classList.remove('show');
+                        }
+                    } else {
+                        alert('Thank you for your feedback!');
+                    }
                     form.reset();
                 })
                 .catch(error => console.error('Error:', error));

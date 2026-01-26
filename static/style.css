@@ -374,7 +374,7 @@ img {
 /* Menu Grid */
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
 }
@@ -386,6 +386,9 @@ img {
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .menu-card:hover {
@@ -397,6 +400,7 @@ img {
     position: relative;
     overflow: hidden;
     height: 250px;
+    flex-shrink: 0;
 }
 
 .stock-overlay {
@@ -468,6 +472,9 @@ img {
 
 .card-content {
     padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-content h3 {
@@ -479,12 +486,14 @@ img {
     color: var(--text-light);
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
+    flex: 1;
 }
 
 .card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: auto;
 }
 
 .price {
@@ -638,6 +647,33 @@ img {
 .footer-brand h3 {
     color: var(--primary);
     margin-bottom: 1rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1rem;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-icon:hover {
+    background: var(--primary);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .footer-links {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedbacks | Happy Bites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="static/assets/images/logo.jpeg" alt="Happy Bites Logo" class="logo-img">
+                <span class="logo-text">Happy Bites</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/menu" class="nav-link">Menu</a></li>
+                <li><a href="/feedbacks" class="nav-link active">Feedbacks</a></li>
+                <li><a href="/#about" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact Us</a></li>
+                {% if session.user_logged_in %}
+                <li><a href="#" class="nav-link" style="color: var(--primary);">Hi, {{ session.full_name.split()[0]
+                        }}</a></li>
+                <li><a href="/logout" class="nav-link">Logout</a></li>
+                {% else %}
+                <li><a href="/login" class="nav-link">Login</a></li>
+                {% endif %}
+                <li class="cart-item">
+                    <button class="cart-btn" aria-label="View Cart">
+                        <span class="cart-icon">🛒</span>
+                        <span class="cart-count">0</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header style="padding: 120px 0 60px; background: var(--light-bg); text-align: center;">
+        <div class="container">
+            <h1 class="section-title">All Customer Feedbacks</h1>
+            <p class="section-desc">We value your thoughts and strive to make every bite a happy one.</p>
+        </div>
+    </header>
+
+    <!-- Feedback List -->
+    <section class="section">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                {% for feedback in feedbacks %}
+                <div
+                    style="background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-card); border-left: 5px solid var(--primary);">
+                    <div style="color: var(--primary); font-size: 1.2rem; margin-bottom: 1rem;">
+                        {% for i in range(feedback.rating) %}★{% endfor %}
+                        {% for i in range(5 - feedback.rating) %}<span style="color: #ccc;">★</span>{% endfor %}
+                    </div>
+                    <p style="font-style: italic; color: #555; margin-bottom: 1.5rem; line-height: 1.6;">"{{
+                        feedback.message }}"</p>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #eee;">
+                        <span style="font-weight: 700; color: var(--primary-dark);">Happy Customer</span>
+                        <span style="font-size: 0.8rem; color: #999;">{{ feedback.timestamp.strftime('%d %b %Y')
+                            }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center" style="grid-column: 1 / -1; padding: 3rem;">
+                    <p>No feedbacks have been shared yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="/" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container text-center">
+            <p>&copy; 2026 Happy Bites. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

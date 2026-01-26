@@ -15,6 +15,7 @@
         rel="stylesheet">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
@@ -34,7 +35,8 @@
             </button>
             <ul class="nav-links">
                 <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="/menu" class="nav-link">Menu</a></li>
+                <li><a href="/feedbacks" class="nav-link">Feedbacks</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#contact" class="nav-link">Contact Us</a></li>
                 {% if session.user_logged_in %}
@@ -61,8 +63,9 @@
             <div class="overlay"></div>
         </div>
         <div class="container hero-content">
-            <h1 class="hero-title">Taste the <span class="highlight">Happiness</span></h1>
-            <p class="hero-subtitle">Premium bakery treats and authentic snacks made with love.</p>
+            <h1 class="hero-title">Joy in <span class="highlight">Every Bites</span></h1>
+            <p class="hero-subtitle">Delicious Snacks For Everyone.
+            </p>
             <div class="hero-buttons">
                 <a href="/menu" class="btn btn-primary">View Menu</a>
                 <a href="#menu" class="btn btn-secondary">Order Now</a>
@@ -147,12 +150,64 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    {% if testimonials %}
+    <section class="section" style="background: var(--light-bg);">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonials-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem;">
+                {% for t in testimonials %}
+                <div class="testimonial-card"
+                    style="background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-soft); text-align: left; border-top: 4px solid var(--primary);">
+                    <div style="color: var(--primary); font-size: 1rem; margin-bottom: 0.8rem;">
+                        {% for i in range(t.rating) %}★{% endfor %}
+                        {% for i in range(5 - t.rating) %}<span style="color: #ccc;">★</span>{% endfor %}
+                    </div>
+                    <p
+                        style="font-style: italic; color: #555; margin-bottom: 1rem; line-height: 1.5; font-size: 0.95rem;">
+                        "{{ t.message }}"</p>
+                    <div style="font-weight: 700; color: var(--primary-dark); font-size: 0.9rem;">Happy Customer</div>
+                    <div style="font-size: 0.75rem; color: #999;">{{ t.timestamp.strftime('%d %B %Y') }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="/feedbacks" class="btn btn-secondary">See All Feedbacks</a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     <!-- Footer -->
     <footer id="contact" class="site-footer">
         <div class="container footer-content">
             <div class="footer-brand">
                 <h3>Happy Bites</h3>
                 <p>Spreading joy, one bite at a time.</p>
+                <div class="social-links">
+                    {% if store_settings.instagram %}
+                    <a href="{{ store_settings.instagram }}" target="_blank" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
+                    {% if store_settings.facebook %}
+                    <a href="{{ store_settings.facebook }}" target="_blank" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    {% endif %}
+                    {% if store_settings.twitter %}
+                    <a href="{{ store_settings.twitter }}" target="_blank" class="social-icon" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if store_settings.whatsapp %}
+                    <a href="https://wa.me/{{ store_settings.whatsapp|replace(' ', '')|replace('+', '') }}"
+                        target="_blank" class="social-icon" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    {% endif %}
+                </div>
             </div>
             <div class="footer-links">
                 <h4>Quick Links</h4>
@@ -162,9 +217,9 @@
             </div>
             <div class="footer-contact">
                 <h4>Visit Us</h4>
-                <p>123 Bakery Street, Food Town, FL 32000</p>
-                <p>hello@happybites.com</p>
-                <p>+1 (555) 123-4567</p>
+                <p>{{ store_settings.address }}</p>
+                <p>{{ store_settings.email }}</p>
+                <p>{{ store_settings.phone }}</p>
             </div>
             <div class="footer-newsletter">
                 <h4>Feedback & Rating</h4>
@@ -205,17 +260,31 @@
             <div class="empty-cart-msg">Your cart is empty.</div>
         </div>
         <div class="cart-footer">
+            {% if session.user_logged_in %}
             <div class="cart-customer-details">
-                <input type="text" id="cart-name" placeholder="Your Name" class="cart-input"
-                    value="{{ session.full_name if session.user_logged_in else '' }}">
-                <input type="tel" id="cart-phone" placeholder="Phone Number" class="cart-input"
-                    value="{{ session.phone if session.user_logged_in else '' }}">
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-light);">Delivering to:</p>
+                <input type="text" id="cart-address" placeholder="Delivery Address" class="cart-input"
+                    value="{{ session.address if session.address else '' }}">
             </div>
             <div class="cart-total">
                 <span>Total:</span>
                 <span class="total-amount">Rs.0.00</span>
             </div>
             <button class="btn btn-primary checkout-btn" disabled>Checkout</button>
+            {% else %}
+            <div class="cart-login-prompt"
+                style="text-align: center; padding: 1rem; background: var(--secondary); border-radius: var(--radius); margin-bottom: 1rem;">
+                <p style="margin-bottom: 1rem; color: var(--text-dark);">Please login to place an order</p>
+                <a href="/login" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Login / Sign
+                    Up</a>
+            </div>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-amount">Rs.0.00</span>
+            </div>
+            <button class="btn btn-primary checkout-btn" disabled style="opacity: 0.5; cursor: not-allowed;">Checkout
+                Restricted</button>
+            {% endif %}
         </div>
     </div>
     <div id="order-success-modal" class="custom-modal">
@@ -225,6 +294,16 @@
             <p>Thank you for ordering from Happy Bites.</p>
             <p class="modal-subtext">We'll get started on your delicious treats right away.</p>
             <button class="btn btn-primary" id="close-modal-btn">Continue Shopping</button>
+        </div>
+    </div>
+
+    <div id="feedback-success-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <div class="modal-icon">🧡</div>
+            <h2>Thank You!</h2>
+            <p>We appreciate your valuable feedback.</p>
+            <p class="modal-subtext">It helps us make Happy Bites even better for you.</p>
+            <button class="btn btn-primary" id="close-feedback-modal">Close</button>
         </div>
     </div>
     <div class="cart-overlay"></div>
