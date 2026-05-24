@@ -22,3 +22,21 @@ A collaborative food website project developed by our team.
 
 ## Team Project
 Built with friends using Antigravity.
+
+## Screenshots
+
+### Home page
+
+![Home page](screenshots/Home.png)
+
+### Admin pages
+
+![Admin login page](screenshots/adminlogin.png)
+![Admin setting stock page](screenshots/settingstock.png )
+![Admin upgrading stock page](screenshots/stock.png)
+
+### User pages
+
+![user login page](screenshots/userlogin.png)
+![user checkout page](screenshots/checkout.png)
+![User feedback page](screenshots/Feedback.png)
